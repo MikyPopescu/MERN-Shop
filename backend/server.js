@@ -1,30 +1,29 @@
-const express = require('express')
-const dotenv = require('dotenv');
-const connectDB = require("./config/db")
-const notFound = require('./middleware/errorMiddleware')
-const errorHandler = require('./middleware/errorMiddleware')
-const colors = require('colors');
-const productRoutes = require('./routes/productRoutes');
+import express from 'express'
+import dotenv from 'dotenv'
+import colors from 'colors'
+import { notFound, errorHandler } from './middleware/errorMiddleware.js'
+import connectDB from './config/db.js'
+import productRoutes from './routes/productRoutes.js'
+import userRoutes from './routes/userRoutes.js'
+
 dotenv.config();
 
 connectDB();
 
 const app = express();
 
-app.use((req,res,next)=>{
-    console.log("hello")
-    next();
-})
+app.use(express.json())
+
 
 app.get("/",(req,res) => {
     res.send('API running')
 })
 
-app.use("/api/products",productRoutes)
+app.use("/api/products", productRoutes)
+app.use("/api/users" ,userRoutes)
 
 //middleware
 app.use(notFound)
-
 app.use(errorHandler)
 
 
